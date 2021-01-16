@@ -9,4 +9,5 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
     - name: Run docker
-      uses: docker run --rm cueckoo/copybara:afc4ae03eed00b0c9d7415141cd1b5dfa583da7c bash -c "java -jar /opt/copybara/copybara_deploy.jar help"
+      run: |-
+        docker run --rm cueckoo/copybara:afc4ae03eed00b0c9d7415141cd1b5dfa583da7c bash -c "java -jar /opt/copybara/copybara_deploy.jar help"
