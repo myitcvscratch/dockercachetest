@@ -2,12 +2,27 @@ on: [push]
 name: Test
 jobs:
   test:
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [ubuntu-latest]
-    runs-on: ${{ matrix.platform }}
+    runs-on: ubuntu-latest
     steps:
-    - name: Run docker
-      run: |-
-        docker run --rm cueckoo/copybara:afc4ae03eed00b0c9d7415141cd1b5dfa583da7c bash -c "java -jar /opt/copybara/copybara_deploy.jar help"
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Install Go
+        uses: actions/setup-go@v4
+        with:
+          cache: false
+          go-version: "1.20.4"
+      - name: Print go cache paths
+        run: go env
+      - name: Cache setup
+        uses: actions/cache@v3
+        with:
+          path: |-
+            /path/to/dockercache
+          key: ${{ runner.os }}
+          restore-keys: ${{ runner.os }}
+      - name: Run docker
+        run: |-
+          docker buildx build -t preprocessor --load -f ./_docker/Dockerfile ./_docker
