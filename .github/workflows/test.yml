@@ -24,7 +24,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |-
-            .cache/dockercache
+            ~/.cache/dockercache
           key: ${{ runner.os }}
           restore-keys: ${{ runner.os }}
       - name: Make cache dir
