@@ -27,6 +27,12 @@ jobs:
             .cache/dockercache
           key: ${{ runner.os }}
           restore-keys: ${{ runner.os }}
+      - name: Make cache dir
+        run: mkdir -p $HOME/.cache/dockercache
       - name: Run docker
         run: |-
           docker buildx build --cache-from=type=local,src=$HOME/.cache/dockercache --cache-to=type=local,dest=$HOME/.cache/dockercache -t preprocessor --load -f ./Dockerfile .
+        env:
+          DOCKER_BUILDKIT: 1
+      - name: Check cache dir
+        run: find $HOME/.cache/dockercache
