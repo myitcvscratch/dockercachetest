@@ -22,9 +22,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |-
-            /path/to/dockercache
+            .cache/dockercache
           key: ${{ runner.os }}
           restore-keys: ${{ runner.os }}
       - name: Run docker
         run: |-
-          docker buildx build -t preprocessor --load -f ./Dockerfile .
+          docker buildx build --cache-from=type=local,src=$HOME/.cache/dockercache --cache-to=type=local,dest=$HOME/.cache/dockercache -t preprocessor --load -f ./Dockerfile .
