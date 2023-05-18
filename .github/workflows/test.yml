@@ -25,4 +25,4 @@ jobs:
           restore-keys: ${{ runner.os }}
       - name: Run docker
         run: |-
-          docker buildx build -t preprocessor --load -f ./_docker/Dockerfile ./_docker
+          docker buildx build -t preprocessor --load -f ./Dockerfile .
